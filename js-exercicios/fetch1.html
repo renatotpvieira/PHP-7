@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch 1</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css"
+        integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <!-- http://files.cod3r.com.br/curso-web/ajax.zip -->
+    <main class="container">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h3 class="card-title">Estados</h3>
+            </div>
+            <div id="myDiv" class="card-body">
+
+            </div>
+        </div>
+    </main>
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.min.js"
+        integrity="sha512-i9cEfJwUwViEPFKdC1enz4ZRGBj8YQo6QByFTF92YXHi7waCqyexvRD75S5NVTsSiTv7rKWqG9Y5eFxmRsOn0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // https://servicodados.ibge.gov.br/api/v1/localidades/estados
+
+
+        function ajax(config) {
+            // console.log(config);
+            const xhr = new XMLHttpRequest()
+            xhr.open(config.method, config.url, true)
+
+            xhr.onload = e => {
+                if (xhr.status == 200) {
+                    // console.log('ajax');
+
+                    config.success(xhr.response)
+
+                } else if (xhr.status >= 400) {
+
+                }
+            }
+
+            xhr.send()
+
+            return config.success;
+        }
+
+        function criaTabelaEstados(data) {
+
+            const estados = JSON.parse(data);
+
+            const linhas = estados.map(
+                estado => {
+                    var id = document.createElement("td");
+                    var sigla = document.createElement("td");
+                    var nome = document.createElement("td");
+                    var regiao = document.createElement("td");
+
+                    id.innerHTML = estado.id;
+                    sigla.innerHTML = estado.sigla;
+                    nome.innerHTML = estado.nome;
+                    regiao.innerHTML = estado.regiao.nome;
+
+                    var tr = document.createElement("tr");
+
+                    tr.appendChild(id);
+                    tr.appendChild(sigla);
+                    tr.appendChild(nome);
+                    tr.appendChild(regiao);
+                    // console.log(tr);
+                    return tr;
+                }
+            );
+
+            var table = document.createElement("table");
+            var thead = document.createElement("thead");
+            var tbody = document.createElement("tbody");
+
+            thead.innerHTML = `<tr>
+                                <th>codigo</th>
+                                <th>sigla</th>
+                                <th>nome</th>
+                                <th>regiao</th>
+                                </tr>`;
+            table.appendChild(thead);
+
+            linhas.forEach(linha => {
+                tbody.appendChild(linha);
+            });
+
+            table.appendChild(tbody);
+
+            document.getElementById('myDiv').append(table);
+            console.log(table);
+        }
+
+
+
+        ajax({
+            url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+            method: "GET",
+            success: function (data) {
+
+
+                criaTabelaEstados(data);
+            }
+        });
+
+
+
+
+    </script>
+</body>
+
+</html>
