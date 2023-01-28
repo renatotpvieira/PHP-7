@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (isset($_COOKIE['usuario'])) {
+    $_SESSION['usuario'] = $_COOKIE['usuario'];
+}
+
 if (!isset($_SESSION['usuario'])) {
     header('location: login.php');
 }
@@ -22,8 +26,8 @@ if (!isset($_SESSION['usuario'])) {
         <h2>Índice dos Exercícios</h2>
     </header>
     <nav class="navegacao">
-        <a href="" class="verde">Sem formatação</a>
-        <a href="index.php" class="vermelho">Voltar</a>
+        <span class="usuario">Usuário: <?= $_SESSION['usuario'] ?></span>
+        <a href="logout.php">Sair</a>
     </nav>
     <main class="principal">
         <div class="conteudo">

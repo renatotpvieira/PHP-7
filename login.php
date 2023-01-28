@@ -29,6 +29,7 @@ if (isset($_POST['email'])) {
         if ($emailValido && $senhalValida) {
             $_SESSION["erros"] = null;
             $_SESSION["usuario"] = $usuario["nome"];
+            setcookie('usuario', $usuario['nome'], time() + 3600);
             header('location: index.php');
         } else {
             $_SESSION["erros"] = ["Email ou senha inválidos"];
